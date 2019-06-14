@@ -77,3 +77,10 @@ http://localhost/path/to/index.php/gii
 
 Screenshots
 -----------
+Entire page
+![giiant-0 2-screen-1](./image/1.png)
+Custom parameter
+![giiant-0 2-screen-2](./image/2.png)
+generate `swagger 2.0(openapi 2.0)` annotation
+![giiant-0 2-screen-3](./image/3.jpg)
+
