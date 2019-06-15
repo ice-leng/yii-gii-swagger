@@ -296,11 +296,11 @@ $js = <<<js
             }
         }
         if (name !== undefined && $(name).length <= 0) {
-            if (name === 'rowParameter') {
+            if (name === '.rowParameter') {
                 addParameter();
             }
             
-           if (name === 'rowResponse') {
+           if (name === '.rowResponse') {
                 addResponse();
             }
         }
