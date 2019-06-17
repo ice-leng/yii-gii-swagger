@@ -92,10 +92,14 @@ $js = <<<js
         if ({$parameters}) {
             let parameters = {$jsParameters};
             initParameter(parameters);
+        }else{
+            addParameter();
         }
         if ({$responses}) {
             let responses = {$jsResponses};
             initResponse(responses);
+        }else{
+            addResponse();
         }
         if ({$definitions}) {
             let definitions = {$jsDefinitions};
@@ -551,6 +555,13 @@ $js = <<<js
                     $(this).prop('checked', true);
                 }
             });
+            let radio2 = $("#generator-security input[type='radio']");
+            radio2.prop('checked', false);
+            radio2.each(function(){
+                if ($(this).val() === data.security) {
+                    $(this).prop('checked', true);
+                }
+            });
             $('#generator-summary').val(data.summary);
             $('#generator-description').val(data.description);
             let checkbox = $("#generator-produces input[type='checkbox']");
@@ -613,6 +624,7 @@ echo $form->field($generator, 'tag', [
         Html::tag('div', '{error}', ['class' => 'col-md-12']),
     ]),
 ])->textInput(['id' => 'tag']);
+echo $form->field($generator, 'security')->radioList(['true' => '是', 'false' => '否']);
 echo $form->field($generator, 'deprecated')->radioList(['true' => '是', 'false' => '否']);
 echo $form->field($generator, 'summary');
 echo $form->field($generator, 'description')->textarea(['rows' => 5]);

@@ -75,6 +75,12 @@ or if you have enabled pretty URLs, you may use the following URL:
 http://localhost/path/to/index.php/gii
 ```
 
+extension
+----
+
+You can use swagger doc  extension [yii-swagger](https://github.com/ice-leng/yii-swagger).
+
+
 Screenshots
 -----------
 Entire page

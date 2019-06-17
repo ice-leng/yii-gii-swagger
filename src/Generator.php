@@ -17,6 +17,7 @@ class Generator extends \yii\gii\Generator
     public $produces;
     public $consumes;
     public $deprecated;
+    public $security;
 
     public $tag;
     public $parameter;
@@ -45,6 +46,9 @@ class Generator extends \yii\gii\Generator
 
         if ($this->deprecated === null) {
             $this->deprecated = 'false';
+        }
+        if ($this->security === null) {
+            $this->security = 'true';
         }
         if ($this->viewPath === null) {
             $this->viewPath = \Yii::$app->basePath . '/swagger';
@@ -135,6 +139,7 @@ class Generator extends \yii\gii\Generator
             'produces'    => '{"' . implode('", "', $this->produces) . '"}',
             'consumes'    => '{"' . implode('", "', $this->consumes) . '"}',
             'deprecated'  => $this->deprecated,
+            'security'  => $this->security,
         ];
     }
 
@@ -309,7 +314,7 @@ class Generator extends \yii\gii\Generator
             [['tags', 'parameters', 'responses', 'definitions'], 'filter', 'filter' => 'trim', 'skipOnArray' => true],
             ['tag', 'validateTags', 'skipOnEmpty' => false],
             ['responses', 'validateResponses', 'skipOnEmpty' => false],
-            ['deprecated', 'string'],
+            [['deprecated', 'security'], 'string'],
         ]);
     }
 
@@ -324,6 +329,7 @@ class Generator extends \yii\gii\Generator
             'tag'                  => '标签',
             'summary'              => '摘要',
             'deprecated'           => '是否弃用',
+            'security'             => '是否token授权',
             'description'          => '描述',
             'consumes'             => '请求内容类型',
             'produces'             => '请求返回内容类型',

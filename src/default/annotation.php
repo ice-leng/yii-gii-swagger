@@ -101,9 +101,10 @@ $p = getParameter($parameters, $r);
  *    description="<?= $info['description'] ?>",
  *    consumes=<?= $info['consumes'] ?>,
  *    produces=<?= $info['produces'] ?>,
+<?= $info['security'] === 'true' ? (' *    security={{"api_key":{}}},'."\n")  : '' ?>
 <?= $info['deprecated'] === 'true' ? (" *    deprecated=true,\n")  : '' ?>
 <?= $p ?>
 <?= $r ?>
- * )
+    * )
 <?= getDefinitions($definitions) ?>
- * <?= $end ?>
+    * <?= $end ?>
