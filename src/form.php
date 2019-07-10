@@ -300,11 +300,11 @@ $js = <<<js
             }
         }
         if (name !== undefined && $(name).length <= 0) {
-            if (name === '.rowParameter') {
+            if (name === '.rowParameter' && !t) {
                 addParameter();
             }
             
-           if (name === '.rowResponse') {
+           if (name === '.rowResponse' && !t) {
                 addResponse();
             }
         }
