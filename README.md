@@ -44,13 +44,7 @@ Once the extension is installed, simply modify your application configuration at
         'generators' => [
             'swagger' => [
                 'class'      => 'lengbin\gii\swagger\Generator', //class
-                'parameters' => [                                //set default request parameters
-                    'parameterName'        => ['X-Api-Token'],
-                    'parameterDescription' => ['token'],
-                    'parameterIn'          => ['header'],
-                    'parameterType'        => ['string'],
-                    'parameterRequired'    => ['true'],
-                ],
+                'parameters' => [],                              //set default request parameters
                 'responses'  => [                               //set default respons parameters
                     'responseStatus'      => [200, 'default'],
                     'responseDescription' => ['success', '请求失败， http status 强行转为200, 通过code判断'],
