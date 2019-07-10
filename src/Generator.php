@@ -117,10 +117,8 @@ class Generator extends \yii\gii\Generator
         $swaggerDefinition = $swaggerDefinition ? $swaggerDefinition : [];
 
         if (!empty($this->definitions)) {
-            foreach ($this->definitions as $definitions) {
-                $definition = Json::decode($definitions);
-                $swaggerDefinition[$this->path] = $definition['definitionName'];
-            }
+            $responses = $this->formateResponses();
+            $swaggerDefinition[$this->path] = $responses[200]['ref'];
         }
 
         \Yii::$app->cache->set($swaggerDefinitionKey, $swaggerDefinition);
@@ -200,7 +198,7 @@ class Generator extends \yii\gii\Generator
         ];
     }
 
-    protected function generateResponses($definitions)
+    protected function formateResponses()
     {
         $responses = [];
         if (!empty($this->responses)) {
@@ -217,6 +215,12 @@ class Generator extends \yii\gii\Generator
                 $responses[$pv] = $pData;
             }
         }
+        return $responses;
+    }
+
+    protected function generateResponses($definitions)
+    {
+        $responses = $this->formateResponses();
         if ($responses[200]['ref'] !== 'SuccessDefault') {
             $definitionSuccess = $responses[200]['ref'] . 'Success';
             $swaggerDefinitionKey = 'swagger-definition';

@@ -105,6 +105,6 @@ $p = getParameter($parameters, $r);
 <?= $info['deprecated'] === 'true' ? (" *    deprecated=true,\n")  : '' ?>
 <?= $p ?>
 <?= $r ?>
-    * )
+ * )
 <?= getDefinitions($definitions) ?>
     * <?= $end ?>
