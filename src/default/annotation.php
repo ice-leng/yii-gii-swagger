@@ -33,7 +33,7 @@ function format($params, $type = 0, $exampleItems = [])
                     $itemData[$item['property']] = $item['example'];
                 }
                 if (!empty($itemData)) {
-                    $data[2] = 'example={' . json_encode($itemData) . '}';
+                    $data[2] = 'example={' . json_encode($itemData, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . '}';
                 }
             }
         }
