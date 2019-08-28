@@ -157,7 +157,10 @@ class Generator extends \yii\gii\Generator
             foreach ($this->parameters['parameterName'] as $pk => $pv) {
                 $pData = [];
                 foreach ($pFields as $pField => $pChange) {
-                    $pData[$pChange] = !empty($this->parameters[$pField][$pk]) ? $this->parameters[$pField][$pk] : null;
+                    $pData[$pChange] = null;
+                    if (!empty($this->parameters[$pField])) {
+                        $pData[$pChange] = array_key_exists($pk, $this->parameters[$pField]) ? $this->parameters[$pField][$pk] : null;
+                    }
                 }
                 if (empty($pData['name'])) {
                     continue;
@@ -210,7 +213,10 @@ class Generator extends \yii\gii\Generator
             foreach ($this->responses['responseStatus'] as $pk => $pv) {
                 $pData = [];
                 foreach ($pFields as $pField => $pChange) {
-                    $pData[$pChange] = !empty($this->responses[$pField][$pk]) ? $this->responses[$pField][$pk] : null;
+                    $pData[$pChange] = null;
+                    if (!empty($this->responses[$pField])) {
+                        $pData[$pChange] = array_key_exists($pk, $this->responses[$pField]) ? $this->responses[$pField][$pk] : null;
+                    }
                 }
                 $responses[$pv] = $pData;
             }
@@ -259,7 +265,10 @@ class Generator extends \yii\gii\Generator
                 ];
                 foreach ($pData['property'] as $pk => $pv) {
                     foreach ($pFields as $pField => $pChange) {
-                        $dData[$pChange] = !empty($pData[$pField][$pk]) ? $pData[$pField][$pk] : null;
+                        $dData[$pChange] = null;
+                        if (!empty($pData[$pField])) {
+                            $dData[$pChange] = array_key_exists($pk, $pData[$pField]) ? $pData[$pField][$pk] : null;
+                        }
                     }
                     $cData['data'][] = $dData;
                 }
@@ -428,6 +437,7 @@ class Generator extends \yii\gii\Generator
             'integer' => 'integer',
             'number'  => 'number',
             'boolean' => 'boolean',
+            'array'   => 'array',
             'object'  => 'object',
         ];
     }
@@ -438,7 +448,7 @@ class Generator extends \yii\gii\Generator
             [
                 'property'    => 'list',
                 'description' => '列表',
-                'type'        => 'object',
+                'type'        => 'array',
                 'ref'         => '',
                 'example'     => '',
             ],

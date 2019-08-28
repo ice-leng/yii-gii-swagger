@@ -342,7 +342,7 @@ $js = <<<js
     function checkType(obj) {
         let _this = $(obj);
         let v = _this.val();
-        if (v === 'object') {
+        if (v === 'object' || v === 'array') {
             _this.parent().next().next().children().prop('disabled', true); 
             _this.parent().next().children().prop('disabled', false); 
         } else {

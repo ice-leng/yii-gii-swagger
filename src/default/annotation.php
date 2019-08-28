@@ -9,7 +9,7 @@ function isJson($string)
     return (json_last_error() == JSON_ERROR_NONE) ? is_array($data) : '';
 }
 
-function format($params, $type = 0)
+function format($params, $type = 0, $exampleItems = [])
 {
     $data = [];
     foreach ($params as $filed => $value) {
@@ -23,8 +23,18 @@ function format($params, $type = 0)
         }
         if ($filed === 'ref') {
             $string = 'ref="#/definitions/' . $value . '"';
-            if ($type) {
+            if ($type === 1) {
                 $string = '@SWG\Schema(' . $string . ')';
+            }
+            if ($type === 2) {
+                $string = 'items={"$ref":"#/definitions/'.$value.'"}';
+                $itemData = [];
+                foreach ($exampleItems as $item) {
+                    $itemData[$item['property']] = $item['example'];
+                }
+                if (!empty($itemData)) {
+                    $data[2] = 'example={' . json_encode($itemData) . '}';
+                }
             }
         }
         $data[] = $string;
@@ -36,7 +46,8 @@ function getParameter($parameters, $r)
 {
     $parameterAnnotations = [];
     foreach ($parameters as $parameter) {
-        $annotations = implode(",\n *        ", format($parameter));
+        $type = $parameter['in'] === 'body' ? 1 : 0;
+        $annotations = implode(",\n *        ", format($parameter, $type));
         $parameterAnnotations[] = <<<parameterAnnotation
  *    
  *    @SWG\Parameter(
@@ -66,10 +77,15 @@ responseAnnotation;
 function getDefinitions($definitions)
 {
     $definitionAnnotations = [];
-    foreach ($definitions as $definition) {
+    foreach ($definitions as $name => $definition) {
         $definitionItems = [];
-        foreach ($definition['data'] as $datum) {
-            $definitionItem = implode(",\n *        ", format($datum));
+        foreach ($definition as $datum) {
+            $type = $datum['type'] === 'array' ? 2 : 0;
+            $item = [];
+            if ($type) {
+                $item = $definitions[$datum['ref']];
+            }
+            $definitionItem = implode(",\n *        ", format($datum, $type, $item));
             $definitionItems[] = <<<definitionItems
  *                
  *    @SWG\Property(
@@ -81,7 +97,7 @@ definitionItems;
         $definitionAnnotations[] = <<<definitionAnnotation
  *
  * @SWG\Definition(
- *    definition = "{$definition['definition']}",
+ *    definition = "{$name}",
 {$definitionAnnotation}
  * )
 definitionAnnotation;
@@ -91,6 +107,10 @@ definitionAnnotation;
 
 $r = getResponses($responses);
 $p = getParameter($parameters, $r);
+$d = [];
+foreach ($definitions as $definition) {
+    $d[$definition['definition']] = $definition['data'];
+}
 
 ?>
  * <?= $start . "\n" ?>
@@ -106,5 +126,5 @@ $p = getParameter($parameters, $r);
 <?= $p ?>
 <?= $r ?>
  * )
-<?= getDefinitions($definitions) ?>
+<?= getDefinitions($d) ?>
  * <?= $end ?>
